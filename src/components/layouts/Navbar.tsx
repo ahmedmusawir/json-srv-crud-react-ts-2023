@@ -29,7 +29,7 @@ const Navbar = ({ className }: Props) => {
     <div className={`navbar ${className}`}>
       <div className="navbar-start">
         <Link to={"/"} className="btn btn-ghost normal-case text-xl">
-          GHL Api v.1
+          GHL Json Srv
         </Link>
       </div>
       <div id="navbarNav" className="navber-end  hidden sm:flex">

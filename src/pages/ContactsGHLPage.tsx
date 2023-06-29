@@ -39,8 +39,8 @@ const ContactsGHLPage = () => {
     <Container className={""} FULL={false} pageTitle={"Contacts"}>
       <Row className={"prose flex justify-between"}>
         <div className="header-text">
-          <h1 className="h1">GHL Contacts</h1>
-          <h4 className="h2">REST API v.1</h4>
+          <h1 className="h1">GHL Json Server Contacts</h1>
+          <h4 className="h2">JSON Srv LOCAL 0.17.3</h4>
         </div>
         <button
           className="btn btn-primary my-5 btn-wide btn-lg"
