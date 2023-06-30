@@ -27,7 +27,7 @@ function Container({ children, pageTitle, className, FULL }: Props) {
       )}
       {!FULL && (
         <section
-          className={`min-h-full w-11/12 xl:w-4/5 ${className} mx-auto`}
+          className={`min-h-full w-11/12 xl:w-4/5 ${className} mx-auto mt-5`}
           // className={`border-solid border-2 min-h-full w-11/12 sm:w-11/12 md:w-11/12 lg:w-11/12 xl:w-4/5 ${className}`}
         >
           {children

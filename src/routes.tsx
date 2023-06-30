@@ -7,6 +7,8 @@ import IframeTestPage from "./pages/IframePage";
 import ContactsGHLPage from "./pages/ContactsGHLPage";
 import Demo from "./pages/Demo";
 import ContactDetails from "./components/ContactDetails";
+import UsersAdminPage from "./AXIOS-HTTP-PROJECT/pages/UsersAdminPage";
+import UserDetailPage from "./AXIOS-HTTP-PROJECT/pages/UserDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +21,13 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       { path: "iframe", element: <IframeTestPage /> },
-      { path: "contacts", element: <ContactsGHLPage /> },
-
+      // THE FOLLOWING IS FOR AXIOS HTTP PROJECT W/ LOCAL JSON SERVER @ http://localhost:3500
+      {
+        path: "users",
+        element: <UsersAdminPage />,
+        children: [{ path: ":id", element: <UserDetailPage /> }],
+      },
+      // THE FOLLOWING IS THE BASE PROJECT - GHL CONTACTS WITH LOCAL JSON SERVER @ http://localhost:3500
       {
         path: "contacts",
         element: <ContactsGHLPage />,

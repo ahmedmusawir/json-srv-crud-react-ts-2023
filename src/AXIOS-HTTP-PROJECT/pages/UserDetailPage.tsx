@@ -1,58 +1,65 @@
 import { useParams } from "react-router-dom";
 import { Box, Container, Main } from "../components/layouts";
-import useSingleContact from "../hooks/useSingleContact";
-import useDeleteContact from "../hooks/useDeleteContact";
-import Spinner from "./ui-ux/Spinner";
+// import useSingleContact from "../hooks/useSingleContact";
+// import useDeleteContact from "../hooks/useDeleteContact";
+import Spinner from "../components/ui-ux/Spinner";
 import { useForm } from "react-hook-form";
 import { Contact } from "../entities";
 import { useEffect, useState } from "react";
+import useSingleUser from "../hooks/useSingleUser";
+// import useUpdateContact from "../hooks/useUpdateContact";
 
-const ContactDetails = () => {
+const UserDetailPage = () => {
   const params = useParams();
   const [isEditing, setIsEditing] = useState(false);
-  const { data: contact, isLoading, error } = useSingleContact(params.id);
-  // const { contact } = data || {};
-  // console.log("Single Contact", contact);
+  const { user, isLoading, error } = useSingleUser(params.id);
+  // console.log("User:", user);
+  // console.log("isEditing", isEditing);
 
   // EDITING CONTACT
   const { register, handleSubmit, setValue } = useForm<Contact>();
+  // const handleUpdate = useUpdateContact();
 
   useEffect(() => {
-    if (contact) {
-      setValue("firstName", contact.firstName || "");
-      setValue("lastName", contact.lastName || "");
-      setValue("email", contact.email || "");
-      setValue("phone", contact.phone || "");
-      setValue("companyName", contact.companyName || "");
+    if (user) {
+      setValue("firstName", user.firstName || "");
+      setValue("lastName", user.lastName || "");
+      setValue("email", user.email || "");
+      setValue("phone", user.phone || "");
+      setValue("companyName", user?.roles?.role || "");
     }
-  }, [contact, setValue]);
+  }, [user, setValue]);
 
-  const onSubmit = (data: Contact) => {
-    console.log(data);
-    setIsEditing(false);
-    // Call your update function here
-  };
+  // const onSubmit = (data: Contact) => {
+  //   console.log(data);
+  //   setIsEditing(false);
+  //   // Call your update function here
+  //   handleUpdate.mutate({
+  //     id: params.id,
+  //     updates: data,
+  //   });
+  // };
 
   // DELETING CONTACT
-  const { mutateAsync } = useDeleteContact();
+  // const { mutateAsync } = useDeleteContact();
+
+  // const deleteItem = async (id: string = "") => {
+  //   if (window.confirm("Are you sure you want to delete this item?")) {
+  //     try {
+  //       await mutateAsync(id);
+  //       console.log("Todo deleted successfully");
+  //       // window.location.reload();
+  //     } catch (err) {
+  //       console.log("An error occurred:", err);
+  //     }
+  //   } else {
+  //     console.log("Deletion cancelled");
+  //   }
+  // };
 
   if (isLoading) return <Spinner />;
 
   if (error) return <h1>A Moose error has occured! </h1>;
-
-  const deleteItem = async (id: string = "") => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      try {
-        await mutateAsync(id);
-        console.log("Todo deleted successfully");
-        // window.location.reload();
-      } catch (err) {
-        console.log("An error occurred:", err);
-      }
-    } else {
-      console.log("Deletion cancelled");
-    }
-  };
 
   return (
     <Main>
@@ -62,14 +69,15 @@ const ContactDetails = () => {
             <span className="font-extrabold text-primary">User ID:</span>{" "}
             {params.id}
           </h3>
-          <form onSubmit={handleSubmit(onSubmit)} className="form-control">
+          {/* <form onSubmit={handleSubmit(onSubmit)} className="form-control"> */}
+          <form className="form-control">
             <h3>
               <label>
                 First Name:{" "}
                 <input
                   className="input input-primary"
                   {...register("firstName")}
-                  // disabled={!isDirty}
+                  disabled={!isEditing}
                 />
               </label>
             </h3>
@@ -79,7 +87,7 @@ const ContactDetails = () => {
                 <input
                   className="input input-primary"
                   {...register("lastName")}
-                  // disabled={!isDirty}
+                  disabled={!isEditing}
                 />
               </label>
             </h3>
@@ -89,7 +97,7 @@ const ContactDetails = () => {
                 <input
                   className="input input-primary"
                   {...register("email")}
-                  // disabled={!isDirty}
+                  disabled={!isEditing}
                 />
               </label>
             </h3>
@@ -99,7 +107,7 @@ const ContactDetails = () => {
                 <input
                   className="input input-primary"
                   {...register("phone")}
-                  // disabled={!isDirty}
+                  disabled={!isEditing}
                 />
               </label>
             </h3>
@@ -109,15 +117,18 @@ const ContactDetails = () => {
                 <input
                   className="input input-primary"
                   {...register("companyName")}
-                  // disabled={!isDirty}
+                  disabled={!isEditing}
                 />
               </label>
             </h3>
-            {isEditing ? (
+            {isEditing && (
               <button className="btn" type="submit">
                 Save
               </button>
-            ) : (
+            )}
+          </form>
+          {!isEditing && (
+            <div className="form-control">
               <button
                 className="btn"
                 type="button"
@@ -125,13 +136,13 @@ const ContactDetails = () => {
               >
                 Edit
               </button>
-            )}
-          </form>
+            </div>
+          )}
         </Box>
         <Box className="p-7 prose max-w-none">
           <button
             className="btn btn-error"
-            onClick={() => deleteItem(contact?.id)}
+            // onClick={() => deleteItem(contact?.id)}
           >
             Delete
           </button>
@@ -141,4 +152,4 @@ const ContactDetails = () => {
   );
 };
 
-export default ContactDetails;
+export default UserDetailPage;
