@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Container, Main } from "../components/layouts";
 // import useSingleContact from "../hooks/useSingleContact";
 // import useDeleteContact from "../hooks/useDeleteContact";
@@ -15,6 +15,8 @@ import { User } from "../services/userService";
 const UserDetailPage = () => {
   const params = useParams();
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+
   const { user, isLoading, error } = useSingleUser(params.id);
   // console.log("User:", user);
   // console.log("isEditing", isEditing);
@@ -49,7 +51,7 @@ const UserDetailPage = () => {
       try {
         await deleteUser(id);
         console.log("Todo deleted successfully");
-        // window.location.reload();
+        navigate("/users");
       } catch (err) {
         console.log("An error occurred:", err);
       }

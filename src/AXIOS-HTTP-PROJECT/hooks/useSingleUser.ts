@@ -11,12 +11,12 @@ const useSingleUser = (id: string = "") => {
     setIsLoading(true);
 
     const { request, cancel } = userService.get<User>(id);
-    console.log({ request });
+    // console.log({ request });
 
     request
       .then((res) => {
         setUser(res.data);
-        console.log("User Data:", res.data);
+        // console.log("User Data:", res.data);
         setIsLoading(false);
       })
       .catch((err) => {

@@ -40,13 +40,14 @@ const UsersAdminPage = () => {
       <Row className={"prose flex justify-between"}>
         <div className="header-text">
           <h1 className="h1">
-            Axios HTTP Project: <br /> <small>User Admin Page</small>
+            Context CRUD Project: <br /> <small>User Admin Page</small>
           </h1>
           <h4 className="pr-10">
             Based on local Json Server. Here we only setup the generic http
             server with Axios, have a apiClent with the API URL and headers,
             Services like userService with data type details and custom hooks
             like useUsers.ts, addUsers.ts, deleteUsers.ts and updateUsers.ts.
+            CONTEXT/REDUCER implementation has begun
           </h4>
         </div>
         <button

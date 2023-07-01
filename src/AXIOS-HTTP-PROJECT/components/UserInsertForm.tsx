@@ -1,12 +1,13 @@
-import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
-import userService, { User } from "../services/userService";
-import { useState } from "react";
-import { CanceledError } from "../services/apiClient";
-import Spinner from "./ui-ux/Spinner";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import useAddUser from "../hooks/useAddUser";
+import { User } from "../services/userService";
+import Spinner from "./ui-ux/Spinner";
 
 const UserInsertForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -16,9 +17,10 @@ const UserInsertForm = () => {
 
   const onSubmit = (user: User) => {
     const contactWithId = { ...user, id: uuidv4() };
-    console.log(contactWithId);
+    // console.log(contactWithId);
 
     addUser(contactWithId);
+    navigate("/users");
   };
 
   if (isLoading) return <Spinner />;

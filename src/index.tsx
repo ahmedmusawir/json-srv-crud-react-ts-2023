@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider } from "./AXIOS-HTTP-PROJECT/contexts/UserContext";
 
 const queryClient = new QueryClient();
 
@@ -14,9 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </UserProvider>
   </React.StrictMode>
 );
 
