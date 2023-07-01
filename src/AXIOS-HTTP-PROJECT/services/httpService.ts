@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
 interface Entity {
-  id: number;
+  id: number | string;
 }
 
 class HttpService {
@@ -31,7 +31,7 @@ class HttpService {
     return { request, cancel: () => controller.abort() };
   }
 
-  delete(id: Number) {
+  delete(id: number | string) {
     return apiClient.delete(this.endpoint + "/" + id);
   }
 
@@ -40,7 +40,7 @@ class HttpService {
   }
 
   update<T extends Entity>(entity: T) {
-    return apiClient.put(this.endpoint + "/" + entity.id, entity);
+    return apiClient.patch(this.endpoint + "/" + entity.id, entity);
   }
 }
 

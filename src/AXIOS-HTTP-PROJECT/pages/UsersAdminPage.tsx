@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom";
 import UserList from "../components/UserList";
 import { Container, Row, Box } from "../components/layouts";
 import Spinner from "../components/ui-ux/Spinner";
-import UserInsert from "../components/UserInsert";
 import { animated, useSpring } from "react-spring";
 import { useState } from "react";
 import useUsers from "../hooks/useUsers";
+import UserInsertForm from "../components/UserInsertForm";
 
 const UsersAdminPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +64,7 @@ const UsersAdminPage = () => {
           <h2 className="h1">Insert Contacts</h2>
           <hr />
           <Box className="card-normal bg-base-100 shadow-xl px-10">
-            <UserInsert />
+            <UserInsertForm />
           </Box>
         </Row>
       </animated.div>

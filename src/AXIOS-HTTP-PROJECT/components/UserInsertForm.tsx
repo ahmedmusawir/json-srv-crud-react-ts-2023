@@ -4,34 +4,21 @@ import userService, { User } from "../services/userService";
 import { useState } from "react";
 import { CanceledError } from "../services/apiClient";
 import Spinner from "./ui-ux/Spinner";
+import useAddUser from "../hooks/useAddUser";
 
-const UserInsert = () => {
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
+const UserInsertForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<User>();
-  // const { request, error, isLoading } = useAddUsers();
+  const { addUser, error, isLoading } = useAddUser();
 
   const onSubmit = (user: User) => {
     const contactWithId = { ...user, id: uuidv4() };
     console.log(contactWithId);
 
-    const request = userService.post<User>(contactWithId);
-
-    request
-      .then((res) => {
-        // setUsers(res.data);
-        console.log("User Data:", res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        setError(err.message);
-      });
+    addUser(contactWithId);
   };
 
   if (isLoading) return <Spinner />;
@@ -104,4 +91,4 @@ const UserInsert = () => {
   );
 };
 
-export default UserInsert;
+export default UserInsertForm;

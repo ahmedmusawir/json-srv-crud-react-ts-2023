@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import { Contact } from "../entities";
 import { useEffect, useState } from "react";
 import useSingleUser from "../hooks/useSingleUser";
+import useDeleteUser from "../hooks/useDeleteUser";
+import useUpdateUser from "../hooks/useUpdateUser";
+import { User } from "../services/userService";
 // import useUpdateContact from "../hooks/useUpdateContact";
 
 const UserDetailPage = () => {
@@ -17,8 +20,8 @@ const UserDetailPage = () => {
   // console.log("isEditing", isEditing);
 
   // EDITING CONTACT
-  const { register, handleSubmit, setValue } = useForm<Contact>();
-  // const handleUpdate = useUpdateContact();
+  const { register, handleSubmit, setValue } = useForm<User>();
+  const { updateUser } = useUpdateUser();
 
   useEffect(() => {
     if (user) {
@@ -26,36 +29,34 @@ const UserDetailPage = () => {
       setValue("lastName", user.lastName || "");
       setValue("email", user.email || "");
       setValue("phone", user.phone || "");
-      setValue("companyName", user?.roles?.role || "");
+      setValue("roles.role", user?.roles?.role || "");
     }
   }, [user, setValue]);
 
-  // const onSubmit = (data: Contact) => {
-  //   console.log(data);
-  //   setIsEditing(false);
-  //   // Call your update function here
-  //   handleUpdate.mutate({
-  //     id: params.id,
-  //     updates: data,
-  //   });
-  // };
+  const onSubmit = (user: User) => {
+    setIsEditing(false);
+    if (params.id) {
+      const userWithId = { ...user, id: params.id };
+      updateUser(userWithId);
+    }
+  };
 
   // DELETING CONTACT
-  // const { mutateAsync } = useDeleteContact();
+  const { deleteUser } = useDeleteUser();
 
-  // const deleteItem = async (id: string = "") => {
-  //   if (window.confirm("Are you sure you want to delete this item?")) {
-  //     try {
-  //       await mutateAsync(id);
-  //       console.log("Todo deleted successfully");
-  //       // window.location.reload();
-  //     } catch (err) {
-  //       console.log("An error occurred:", err);
-  //     }
-  //   } else {
-  //     console.log("Deletion cancelled");
-  //   }
-  // };
+  const deleteItem = async (id: string = "") => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      try {
+        await deleteUser(id);
+        console.log("Todo deleted successfully");
+        // window.location.reload();
+      } catch (err) {
+        console.log("An error occurred:", err);
+      }
+    } else {
+      console.log("Deletion cancelled");
+    }
+  };
 
   if (isLoading) return <Spinner />;
 
@@ -69,8 +70,8 @@ const UserDetailPage = () => {
             <span className="font-extrabold text-primary">User ID:</span>{" "}
             {params.id}
           </h3>
-          {/* <form onSubmit={handleSubmit(onSubmit)} className="form-control"> */}
-          <form className="form-control">
+          <form onSubmit={handleSubmit(onSubmit)} className="form-control">
+            {/* <form className="form-control"> */}
             <h3>
               <label>
                 First Name:{" "}
@@ -113,10 +114,10 @@ const UserDetailPage = () => {
             </h3>
             <h3>
               <label>
-                Company:{" "}
+                User Role:{" "}
                 <input
                   className="input input-primary"
-                  {...register("companyName")}
+                  {...register("roles.role")}
                   disabled={!isEditing}
                 />
               </label>
@@ -142,7 +143,7 @@ const UserDetailPage = () => {
         <Box className="p-7 prose max-w-none">
           <button
             className="btn btn-error"
-            // onClick={() => deleteItem(contact?.id)}
+            onClick={() => deleteItem(user?.id)}
           >
             Delete
           </button>
