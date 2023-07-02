@@ -1,12 +1,14 @@
 import { User } from "../services/userService";
 
 export type UserState = {
+  user: User | null;
   users: User[];
   isLoading: boolean;
   error: string | null;
 };
 
 export type UserAction =
+  | { type: "FETCH_USER"; payload: User }
   | { type: "FETCH_USERS"; payload: User[] }
   | { type: "ADD_USER"; payload: User }
   | { type: "UPDATE_USER"; payload: User }
@@ -21,6 +23,8 @@ export const userReducer = (
   switch (action.type) {
     case "FETCH_USERS_START":
       return { ...state, isLoading: true, error: null };
+    case "FETCH_USER":
+      return { ...state, user: action.payload, isLoading: false, error: null };
     case "FETCH_USERS":
       return { ...state, users: action.payload, isLoading: false };
     case "FETCH_USERS_ERROR":

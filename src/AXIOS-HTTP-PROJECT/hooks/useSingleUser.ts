@@ -1,34 +1,39 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CanceledError } from "../services/apiClient";
 import userService, { User } from "../services/userService";
+import { UserContext } from "../contexts/UserContext";
 
 const useSingleUser = (id: string = "") => {
-  const [user, setUser] = useState<User>();
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
-    setIsLoading(true);
+    // Try to find the user in the state
+    const user = state.users.find((user) => user.id === id);
 
-    const { request, cancel } = userService.get<User>(id);
-    // console.log({ request });
+    if (user) {
+      // If the user is in the state, use that
+      dispatch({ type: "FETCH_USER", payload: user });
+    } else {
+      // Otherwise, fall back to an API call
+      dispatch({ type: "FETCH_USERS_START" });
 
-    request
-      .then((res) => {
-        setUser(res.data);
-        // console.log("User Data:", res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        setError(err.message);
-      });
+      const { request, cancel } = userService.get<User>(id);
 
-    // Clean up
-    return () => cancel();
-  }, [id]);
+      request
+        .then((res) => {
+          dispatch({ type: "FETCH_USER", payload: res.data });
+        })
+        .catch((err) => {
+          if (err instanceof CanceledError) return;
+          dispatch({ type: "FETCH_USERS_ERROR", payload: err.message });
+        });
 
-  return { user, error, isLoading };
+      // Clean up
+      return () => cancel();
+    }
+  }, [id, dispatch, state.users]);
+
+  return { user: state.user, error: state.error, isLoading: state.isLoading };
 };
 
 export default useSingleUser;

@@ -26,8 +26,6 @@ const UsersAdminPage = () => {
     from: { opacity: 0, maxHeight: 0, display: "none" },
   });
 
-  if (isLoading) return <Spinner />;
-
   if (error) return <h1>A Moose error has occured! </h1>;
 
   const openInsertContact = () => {
@@ -71,13 +69,8 @@ const UsersAdminPage = () => {
       </animated.div>
       <Row className={"grid gap-3 grid-auto-fit p-1"}>
         <Box className={""}>
-          {/* {users?.map((user, index) => (
-            <div key={index}>
-              <p>Email: {user.email}</p>
-            </div>
-          ))} */}
-
-          <UserList users={users} />
+          {isLoading && <Spinner />}
+          {!isLoading && <UserList users={users} />}
         </Box>
         <Box className={"border bg-gray-100"}>
           <Outlet />

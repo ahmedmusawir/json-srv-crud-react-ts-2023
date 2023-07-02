@@ -1,23 +1,22 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import userService, { User } from "../services/userService";
+import { UserContext } from "../contexts/UserContext";
 
 const useUpdateUser = () => {
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { state, dispatch } = useContext(UserContext);
 
   const updateUser = async (user: User) => {
-    setIsLoading(true);
     try {
-      await userService.update(user);
-      setIsLoading(false);
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e);
+      const res = await userService.update(user);
+      dispatch({ type: "UPDATE_USER", payload: res.data });
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({ type: "FETCH_USERS_ERROR", payload: err.message });
       }
     }
   };
 
-  return { updateUser, error, isLoading };
+  return { updateUser, error: state.error, isLoading: state.isLoading };
 };
 
 export default useUpdateUser;

@@ -2,6 +2,7 @@ import React, { createContext, useReducer, ReactNode } from "react";
 import { userReducer, UserState, UserAction } from "../reducers/UserReducer"; // import from the correct path
 
 const initialState: UserState = {
+  user: null,
   users: [],
   isLoading: false,
   error: null,

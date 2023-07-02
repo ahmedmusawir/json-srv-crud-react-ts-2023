@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import useAddUser from "../hooks/useAddUser";
 import { User } from "../services/userService";
-import Spinner from "./ui-ux/Spinner";
 
 const UserInsertForm = () => {
   const navigate = useNavigate();
@@ -20,10 +19,8 @@ const UserInsertForm = () => {
     // console.log(contactWithId);
 
     addUser(contactWithId);
-    navigate("/users");
+    // navigate("/users");
   };
-
-  if (isLoading) return <Spinner />;
 
   if (error) return <h1>A Moose error has occured! </h1>;
 

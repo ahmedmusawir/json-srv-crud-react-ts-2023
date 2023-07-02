@@ -64,6 +64,8 @@ const UserDetailPage = () => {
 
   if (error) return <h1>A Moose error has occured! </h1>;
 
+  if (!user) return <div>No user found</div>;
+
   return (
     <Main>
       <Container FULL={false} pageTitle="Routing" className={""}>
