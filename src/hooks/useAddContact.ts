@@ -14,6 +14,10 @@ const useAddContact = () => {
       // Invalidate and refetch
       queryClient.invalidateQueries([CACHE_KEY_CONTACTS, "all"]);
     },
+    onSettled: () => {
+      // Force a refetch of the contacts after mutation is settled
+      // queryClient.refetchQueries(CACHE_KEY_CONTACTS);
+    },
   });
 };
 
