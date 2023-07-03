@@ -9,7 +9,6 @@ const useAddUser = () => {
     dispatch({ type: "FETCH_USERS_START" });
     try {
       const res = await userService.post(user);
-      // console.log("User Inserted:", res.data);
       dispatch({ type: "ADD_USER", payload: res.data });
     } catch (err) {
       if (err instanceof Error) {
@@ -19,7 +18,6 @@ const useAddUser = () => {
   };
 
   return { addUser, error: state.error, isLoading: state.isLoading };
-  // return { addUser };
 };
 
 export default useAddUser;
